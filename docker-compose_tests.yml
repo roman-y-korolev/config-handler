@@ -1,0 +1,26 @@
+version: '3'
+services:
+  postgres_test:
+    image: onjin/alpine-postgres:9.5
+    restart: unless-stopped
+    ports:
+    - "5432:5432"
+    environment:
+      LC_ALL: C.UTF-8
+      POSTGRES_USER: confighandler
+      POSTGRES_PASSWORD: confighandler
+      POSTGRES_DB: confighandler
+  web_test:
+    build:
+      context: ""
+      dockerfile: Dockerfile
+    environment:
+    - APP_ENV=TEST
+    - APP_PORT=80
+    command: bash run_tests.sh
+    ports:
+    - "80:80"
+    links:
+    - postgres_test
+    depends_on:
+    - postgres_test
