@@ -52,7 +52,7 @@ class Configs(BaseModel):
                                  username=result.username,
                                  password=result.password,
                                  session_url=result.session_url,
-                                 booking_url=result.booking_url, )
+                                 booking_url=result.booking_url)
             else:
                 config = None
 
@@ -74,9 +74,37 @@ class Configs(BaseModel):
                 query = self.table.insert().values(**self.to_dict())
 
                 await conn.execute(query)
+                message = "Config '{tenant} : {integration_type}' is created".format(
+                    tenant=self.tenant,
+                    integration_type=self.integration_type)
 
             else:
+                values = self.to_dict()
+                update_values = {k: values[k] for k in values if values[k] is not None}
                 query = self.table.update().where(self.table.c.tenant == self.tenant).where(
-                    self.table.c.integration_type == self.integration_type).values(**self.to_dict())
+                    self.table.c.integration_type == self.integration_type).values(**update_values)
 
                 await conn.execute(query)
+                message = "Config '{tenant} : {integration_type}' is updated".format(
+                    tenant=self.tenant,
+                    integration_type=self.integration_type)
+
+            logger.info(message)
+
+            return message
+
+    def to_formatted_dict(self):
+        result = {
+            "tenant": self.tenant,
+            "integration_type": self.integration_type,
+            "configuration": {
+                "username": self.username,
+                "password": self.password,
+                "wsdl_urls": {
+                    "session_url": self.session_url,
+                    "booking_url": self.booking_url
+                }
+            }
+        }
+
+        return result
