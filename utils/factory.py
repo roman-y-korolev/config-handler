@@ -42,6 +42,7 @@ def app_factory():
             times += 1
 
     app.router.add_route('POST', '/config', ConfigEndpoint.post)
+    app.router.add_route('GET', '/config', ConfigEndpoint.get)
 
     logger.info('Application is created')
     return app

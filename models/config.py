@@ -93,7 +93,7 @@ class Configs(BaseModel):
 
             return message
 
-    def to_formatted_dict(self):
+    def to_formated_dict(self):
         result = {
             "tenant": self.tenant,
             "integration_type": self.integration_type,

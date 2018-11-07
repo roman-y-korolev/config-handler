@@ -70,3 +70,29 @@ class ConfigEndpoint:
         message = await config.create_or_update()
 
         return web.json_response(data={"message": message}, status=200)
+
+    @classmethod
+    async def get(cls, request):
+
+        schema = {
+            "type": "object",
+            "properties": {
+                "tenant": {"type": "string"},
+                "integration_type": {"type": "string"},
+            },
+            "additionalProperties": False,
+            "required": ["tenant", "integration_type"]
+        }
+
+        params = await get_params(request)
+        try:
+            validate(params, schema)
+        except ValidationError as e:
+            return web.json_response(data={'error': e.message}, status=400)
+
+        config = await Configs.get(tenant=params['tenant'], integration_type=params['integration_type'])
+        if config is None:
+            return web.json_response(data={'error': 'There are no configurations with the specified parameters'},
+                                     status=404)
+        else:
+            return web.json_response(data=config.to_formated_dict(), status=200)
