@@ -1,0 +1,26 @@
+version: '3'
+services:
+  postgres:
+    image: onjin/alpine-postgres:9.5
+    restart: unless-stopped
+    ports:
+    - "5432:5432"
+    environment:
+      LC_ALL: C.UTF-8
+      POSTGRES_USER: confighandler
+      POSTGRES_PASSWORD: confighandler
+      POSTGRES_DB: confighandler
+  web:
+    build:
+      context: ""
+      dockerfile: Dockerfile
+    environment:
+    - APP_ENV=PROD
+    - APP_PORT=80
+    command: python run.py
+    ports:
+    - "8080:80"
+    links:
+    - postgres
+    depends_on:
+    - postgres
