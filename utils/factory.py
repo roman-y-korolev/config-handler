@@ -9,6 +9,8 @@ from psycopg2 import OperationalError
 from conf import DB_CONFIG, DB_CONFIG_TEST, DB_CONFIG_DEV
 from utils.database import get_engine, db
 
+from api.config import ConfigEndpoint
+
 logger = logging.getLogger(__name__)
 
 
@@ -38,6 +40,8 @@ def app_factory():
             logger.warning('can not connect to the database')
             time.sleep(5)
             times += 1
+
+    app.router.add_route('POST', '/config', ConfigEndpoint.post)
 
     logger.info('Application is created')
     return app
