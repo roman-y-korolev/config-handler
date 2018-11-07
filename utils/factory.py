@@ -6,10 +6,11 @@ import time
 from aiohttp import web
 from psycopg2 import OperationalError
 
-from conf import DB_CONFIG, DB_CONFIG_TEST, DB_CONFIG_DEV
-from utils.database import get_engine, db
-
 from api.config import ConfigEndpoint
+from api.login import LoginEndpoint
+from api.users import UserEndpoint
+from conf import DB_CONFIG, DB_CONFIG_TEST, DB_CONFIG_DEV
+from utils.database import get_engine, db, create_all_tables
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,11 @@ def app_factory():
             logger.warning('can not connect to the database')
             time.sleep(5)
             times += 1
+
+    loop.run_until_complete(create_all_tables())
+
+    app.router.add_route('POST', '/user', UserEndpoint.post)
+    app.router.add_route('GET', '/login', LoginEndpoint.get)
 
     app.router.add_route('POST', '/config', ConfigEndpoint.post)
     app.router.add_route('GET', '/config', ConfigEndpoint.get)
