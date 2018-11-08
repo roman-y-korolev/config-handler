@@ -94,6 +94,11 @@ class Configs(BaseModel):
             return message
 
     def to_formatted_dict(self):
+        """
+        Convert Config object to request representation
+        :return: Config in pre-json format
+        :rtype: dict
+        """
         result = {
             "tenant": self.tenant,
             "integration_type": self.integration_type,

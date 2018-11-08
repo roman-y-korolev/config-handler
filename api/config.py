@@ -6,12 +6,15 @@ from jsonschema import validate, ValidationError
 from models.config import Configs
 from utils.api import get_params
 
+from utils.api import token_required
+
 logger = logging.getLogger(__name__)
 
 
 class ConfigEndpoint:
 
     @classmethod
+    @token_required
     async def post(cls, request):
         """
         Endpoint for recipe creation
@@ -25,6 +28,7 @@ class ConfigEndpoint:
             "properties": {
                 "tenant": {"type": "string"},
                 "integration_type": {"type": "string"},
+                "token": {"type": "string"},
                 "configuration": {
                     "type": "object",
                     "properties": {
@@ -70,3 +74,31 @@ class ConfigEndpoint:
         message = await config.create_or_update()
 
         return web.json_response(data={"message": message}, status=200)
+
+    @classmethod
+    @token_required
+    async def get(cls, request):
+
+        schema = {
+            "type": "object",
+            "properties": {
+                "tenant": {"type": "string"},
+                "integration_type": {"type": "string"},
+                "token": {"type": "string"},
+            },
+            "additionalProperties": False,
+            "required": ["tenant", "integration_type"]
+        }
+
+        params = await get_params(request)
+        try:
+            validate(params, schema)
+        except ValidationError as e:
+            return web.json_response(data={'error': e.message}, status=400)
+
+        config = await Configs.get(tenant=params['tenant'], integration_type=params['integration_type'])
+        if config is None:
+            return web.json_response(data={'error': 'There are no configurations with the specified parameters'},
+                                     status=404)
+        else:
+            return web.json_response(data=config.to_formatted_dict(), status=200)
