@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "cc0e2aec-fec5-42fd-badd-1aa996adf6cc",
+		"name": "twyla",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"login\": \"test_login\",\n\t\"password\":\"test_pass\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8080/user",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"password\":\"second\",\n\t\"login\": \"second\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8080/login?login=test_login&password=test_pass",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "test_login"
+						},
+						{
+							"key": "password",
+							"value": "test_pass"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create config",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tenant\": \"acme\",\n    \"integration_type\": \"flight-information-system\",\n    \"token\": \"0a5ef1b7-4fee-487d-a9f1-856bc91d542a\",\n    \"configuration\": {\n        \"username\": \"acme_user\",\n        \"password\": \"acme12345\",\n        \"wsdl_urls\": {\n            \"session_url\": \"https://session.manager.svc\",\n            \"booking_url\": \"https://booking.manager.svc\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8080/config",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get config",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "127.0.0.1:8080/config?tenant=acme&integration_type=flight-information-system&token=0a5ef1b7-4fee-487d-a9f1-856bc91d542a",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"config"
+					],
+					"query": [
+						{
+							"key": "tenant",
+							"value": "acme"
+						},
+						{
+							"key": "integration_type",
+							"value": "flight-information-system"
+						},
+						{
+							"key": "token",
+							"value": "0a5ef1b7-4fee-487d-a9f1-856bc91d542a"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

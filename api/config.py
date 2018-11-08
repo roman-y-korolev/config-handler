@@ -46,7 +46,7 @@ class ConfigEndpoint:
                 }
             },
             "additionalProperties": False,
-            "required": ["tenant", "integration_type"]
+            "required": ["tenant", "integration_type", "token"]
         }
 
         params = await get_params(request)
@@ -87,7 +87,7 @@ class ConfigEndpoint:
                 "token": {"type": "string"},
             },
             "additionalProperties": False,
-            "required": ["tenant", "integration_type"]
+            "required": ["tenant", "integration_type", "token"]
         }
 
         params = await get_params(request)
