@@ -30,7 +30,7 @@ pip install -r requirements.txt
 export APP_ENV=DEV
 export APP_PORT=8080
 ```
-- up database (test database in example, but you can up any postgres db on port 5432 and with name, login and pass from conf.py file)
+- up database (test database in example, but you can up any postgres db on port 5432 and with name, login and pass from [conf.py](https://github.com/roman-y-korolev/config-handler/blob/master/conf.py) file
 ```bash
 docker-compose --file docker-compose_tests.yml up postgres_test
 ```
@@ -50,7 +50,7 @@ There are 3 api endpoints:
 - **/login** for login
 - **/config** endpoint from the task
 
-Endpoint methods and parameters you can get from the postman file 'twyla.postman_collection.json'
+Endpoint methods and parameters you can get from the postman file [twyla.postman_collection.json](https://github.com/roman-y-korolev/config-handler/blob/master/twyla.postman_collection.json)
 
 I made this service with aiohttp and postgres. As driver for postgres I use aiopg. 
 No one non-blocking driver for Postgres doesnt support ORM (and ORM layer of SQLAlchemy too). 
